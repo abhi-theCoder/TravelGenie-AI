@@ -105,7 +105,7 @@ async function sendMessage() {
   showTypingIndicator();
 
   try {
-    const response = await fetch("http://localhost:3000/chat", {
+    const response = await fetch("https://travelgenie-ai-6fyo.onrender.com/chat", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

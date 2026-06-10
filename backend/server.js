@@ -7,7 +7,10 @@ const app = express();
 
 const chatRouter = require('./routes/chat');
 
-app.use(cors());
+app.use(cors({
+    origin:'http://localhost:5173' || 'http://localhost:5174' || 'https://travelgenie-ai-6fyo.onrender.com/',
+    credentials: true,
+}));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '../')));
 // Mount the chat router
