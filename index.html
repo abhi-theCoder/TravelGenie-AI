@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel & Adventure AI Assistant</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="chat-container">
+        <!-- Header -->
+        <div class="chat-header">
+            <div class="chat-header-info">
+                <div class="avatar-ai-header">TR</div>
+                <div class="chat-header-title">
+                    <h2>TravelGenie AI</h2>
+                    <div class="chat-status">
+                        <span class="status-dot"></span>
+                        <span>Online & Ready to chat</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat messages container -->
+        <div id="chat-box">
+            <!-- Welcome Screen shown by default -->
+            <div class="welcome-screen" id="welcome-screen">
+                <div class="welcome-logo">TR</div>
+                <h1>Explore the World</h1>
+                <p>Welcome! I'm your AI Travel Companion. Ask me anything about dream destinations, itineraries, budgets, or travel tips!</p>
+                <!-- <div class="suggested-prompts">
+                    <div class="prompt-chip" onclick="useSuggestion('Suggest a 3-day itinerary for Tokyo')">🇯🇵 3 Days in Tokyo</div>
+                    <div class="prompt-chip" onclick="useSuggestion('What are the best travel tips for budget backpacking in Europe?')">🇪🇺 Backpack Europe</div>
+                    <div class="prompt-chip" onclick="useSuggestion('Recommend hidden gem beaches in Southeast Asia')">🏖️ Asia Hidden Gems</div>
+                </div> -->
+            </div>
+        </div>
+
+        <!-- Input Box Area -->
+        <div class="chat-input-area">
+            <div class="input-wrapper">
+                <input type="text" id="user-input" placeholder="Ask your travel question..." autofocus>
+            </div>
+            <button class="send-btn" onclick="sendMessage()" aria-label="Send message">
+                <svg viewBox="0 0 24 24">
+                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                </svg>
+            </button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
