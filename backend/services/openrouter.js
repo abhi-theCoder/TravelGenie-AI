@@ -28,7 +28,13 @@ Guidelines:
 - If the user has a strict budget, optimize the itinerary accordingly.
 - If weather may affect plans, suggest alternatives.
 - If a user asks general questions, answer them clearly and concisely.
-- Keep responses under 100 words unless the user explicitly requests detailed planning.
+- Keep responses under 150 words (slightly longer to accommodate image markdown tags) unless the user explicitly requests detailed planning.
+
+Image Guidelines:
+- You have real-time web search capabilities enabled via plugins.
+- When the user asks about or searches for a specific city, destination, or tourist attraction (e.g. Darjeeling, Mt. Kangchenjunga, Batasia Loop, Tokyo Tower, Eiffel Tower), you MUST search the web to retrieve actual, high-quality, and active image URLs of that destination or its key attractions.
+- Integrate 1 to 3 relevant images directly into your response using markdown syntax: \`![Name of Attraction or Place](image_url)\`.
+- Only use direct image URLs (e.g. from Wikipedia, Wikimedia Commons, Unsplash, or other reliable sources) that allow hotlinking. Ensure they end with image extensions like .jpg, .jpeg, or .png where possible.
 
 Identity Rules:
 - Your name is TravelGenie AI.
@@ -50,8 +56,15 @@ async function callOpenRouterAPI(messages) {
     {
       model: "openai/gpt-4o-mini", // Configured OpenRouter model
       messages,
+      plugins: [
+        {
+          id: "web",
+          max_results: 5,
+          engine: "exa"
+        }
+      ],
       temperature: 0.7,
-      max_tokens: 400 // Reduced to stay within free-tier OpenRouter credit limits
+      max_tokens: 450 // Slightly increased to fit search context and image URLs
     },
     {
       headers: {

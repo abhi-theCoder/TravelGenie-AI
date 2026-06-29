@@ -21,12 +21,45 @@ function useSuggestion(promptText) {
   sendMessage();
 }
 
-// Function to format text (handles simple line breaks and bold tags)
+// Function to format text (handles simple markdown: images, links, list items, and tags)
 function formatMessage(text) {
-  // Replace asterisks with strong tag
-  let formatted = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+  if (!text) return "";
+
+  // 1. Escape HTML entities to prevent XSS (before injecting HTML tags)
+  let formatted = text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+
+  // 2. Parse Markdown Images: ![alt description](url)
+  formatted = formatted.replace(/!\[(.*?)\]\((.*?)\)/g, (match, alt, url) => {
+    const cleanUrl = url.trim().replace(/&amp;/g, "&");
+    const cleanAlt = alt.trim() || "Attraction Image";
+    const escapedAlt = cleanAlt.replace(/'/g, "\\'");
+    // Return a responsive image container. If image fails to load, it will attempt a self-healing fallback to Wikipedia pageimages, else hide cleanly.
+    return `<div class="chat-image-container">
+              <img src="${cleanUrl}" alt="${cleanAlt}" class="chat-image" referrerpolicy="no-referrer" onload="this.classList.add('loaded');" onerror="if(!this.dataset.fallback){this.dataset.fallback=true; this.src='http://localhost:3000/api/image?q=' + encodeURIComponent('${escapedAlt}');}else{this.parentNode.style.display='none';}" />
+              <div class="chat-image-caption">${cleanAlt}</div>
+            </div>`;
+  });
+
+  // 3. Parse Markdown Links: [label](url)
+  formatted = formatted.replace(/\[(.*?)\]\((.*?)\)/g, (match, label, url) => {
+    const cleanUrl = url.trim().replace(/&amp;/g, "&");
+    const cleanLabel = label.trim();
+    return `<a href="${cleanUrl}" target="_blank" rel="noopener noreferrer" class="chat-link">${cleanLabel}</a>`;
+  });
+
+  // 4. Parse Bold: **text**
+  formatted = formatted.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+  // 5. Parse Italic: *text*
   formatted = formatted.replace(/\*(.*?)\*/g, '<em>$1</em>');
-  // Convert newlines to break tags
+
+  // 6. Convert bullet points: lines starting with "-" or "*" followed by a space
+  formatted = formatted.replace(/^\s*[-*]\s+(.*?)$/gm, '• $1');
+
+  // 7. Convert newlines to break tags
   return formatted.replace(/\n/g, '<br>');
 }
 
@@ -105,7 +138,7 @@ async function sendMessage() {
   showTypingIndicator();
 
   try {
-    const response = await fetch("https://travelgenie-ai-6fyo.onrender.com/chat", {
+    const response = await fetch("http://localhost:3000/chat", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
