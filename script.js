@@ -38,7 +38,7 @@ function formatMessage(text) {
     const escapedAlt = cleanAlt.replace(/'/g, "\\'");
     // Return a responsive image container. If image fails to load, it will attempt a self-healing fallback to Wikipedia pageimages, else hide cleanly.
     return `<div class="chat-image-container">
-              <img src="${cleanUrl}" alt="${cleanAlt}" class="chat-image" referrerpolicy="no-referrer" onload="this.classList.add('loaded');" onerror="if(!this.dataset.fallback){this.dataset.fallback=true; this.src='http://localhost:3000/api/image?q=' + encodeURIComponent('${escapedAlt}');}else{this.parentNode.style.display='none';}" />
+              <img src="${cleanUrl}" alt="${cleanAlt}" class="chat-image" referrerpolicy="no-referrer" onload="this.classList.add('loaded');" onerror="if(!this.dataset.fallback){this.dataset.fallback=true; this.src='https://travelgenie-ai-6fyo.onrender.com/api/image?q=' + encodeURIComponent('${escapedAlt}');}else{this.parentNode.style.display='none';}" />
               <div class="chat-image-caption">${cleanAlt}</div>
             </div>`;
   });
@@ -138,7 +138,7 @@ async function sendMessage() {
   showTypingIndicator();
 
   try {
-    const response = await fetch("http://localhost:3000/chat", {
+    const response = await fetch("https://travelgenie-ai-6fyo.onrender.com/chat", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
